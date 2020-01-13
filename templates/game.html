@@ -1,0 +1,24 @@
+{% extends 'template.html' %}
+
+{% block head %}
+    <title>Game</title>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="container">
+                    <h1 id="word-output">TEXT DISPLAY</h1>
+                    <input type="text" class="form-control form-control-md" placeholder="Type here" id="word-input" autofocus>
+                </div>
+                <div class="container">
+                    <p>Time left (s): <span id="time">time</span></p>
+                    <p>Words typed: <span id="words">words</span></p>
+                    <p>Record: <span id="record">record</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'gamescript.js') }}"></script>
+{% endblock %}

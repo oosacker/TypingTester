@@ -17,7 +17,8 @@
         </tr>
         </thead>
         <tbody>
-        {% for result in myResults %}
+        {# Note that the list is read in reverse; newest first!!!! #}
+        {% for result in myResults | reverse %}
         <tr>
             <td>{{ result.userName }}</td>
             <td>{{ result.wordCount }}</td>

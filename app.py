@@ -37,6 +37,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/getwords")
+def getwords():
+    return json.dumps('12345')
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     return render_template('login.html')

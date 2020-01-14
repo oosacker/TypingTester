@@ -1,45 +1,28 @@
 from flask import *
-import time
-
+import json
 
 app = Flask(__name__)
 
-
-MyWords = ['apple', 'banana', 'coconut', 'domino']
-
-
-def GetCurrentTime():
-    return time.time()
+previous_scores = []
 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    myword = 'tree'
-    message = 'play'
-    if request.method == 'POST':
-        myinput = request.form['input']
-        if myinput == myword:
-            message = 'well done'
-        else:
-            message = 'try again'
-        return render_template('index.html', myword=myword, message=message)
-
-    return render_template('index.html', myword=myword, message=message)
+    return render_template('index.html')
 
 
 @app.route('/game', methods=['POST', 'GET'])
 def game():
-    # myword = 'tree'
-    # message = 'play'
-    # if request.method == 'POST':
-    #     myinput = request.form['input']
-    #     if myinput == myword:
-    #         message = 'well done'
-    #     else:
-    #         message = 'try again'
-    #     return render_template('game.html', input=myinput, word=myword, message=message)
-
-    return render_template('game.html')
+    if request.method == 'POST':
+        if request.is_json:
+            print('got json')
+            data = json.loads(request.get_data())
+            print(data)
+            return render_template('game.html')
+        else:
+            print('not json')
+    else:
+        return render_template('game.html')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,30 @@
+{% extends 'template.html' %}
+{% block head %}
+
+    <title>Results</title>
+
+{% endblock %}
+
+
+{% block body %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Player name</th>
+            <th scope="col">Number of words</th>
+            <th scope="col">Time limit (s)</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in myResults %}
+        <tr>
+            <td>{{ result.userName }}</td>
+            <td>{{ result.wordCount }}</td>
+            <td>{{ result.maxTime }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

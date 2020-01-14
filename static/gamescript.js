@@ -1,6 +1,6 @@
 // Variables
 let wordArray  = [
-        "apple", "banana", "orange", "pineapple", "grape", "cherry", "mango", "raspberry", "lemon", "coconut", "strawyberry"
+        "apple", "banana", "orange", "pineapple", "grape", "cherry", "mango", "raspberry", "lemon", "coconut", "strawberry", "kiwifruit", "guava"
     ]
 let currentWord = ""
 let timeLimit = 10
@@ -14,7 +14,6 @@ $(document).ready(function () {
     $("#message").text("Message")
     chooseWord()
 })
-
 
 function sendGameResult(){
     // Creating a XHR object

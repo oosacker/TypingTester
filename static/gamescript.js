@@ -88,9 +88,11 @@ $("#message").click(function () {
     }
 });
 
-// Event handler for the name entry dialogue
+// Event handler for the name entry dialogue, but DO NOT change if the input box was empty (leaves as default 'player')
 $("#name_save_btn").click(function () {
-    userName = $("#name_input").val()
+    userName_temp = $("#name_input").val()
+    if (userName_temp != '')
+        userName = userName_temp
     $("#name_entry_box").modal('hide')  // Hide the dialogue
 });
 

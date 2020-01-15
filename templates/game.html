@@ -14,7 +14,7 @@
         <hr>
         <p>Time left (s): <span id="time">time</span></p>
         <p>Current score: <span id="wordcnt">words</span></p>
-        <p>High score: <span id="highScore">0</span></p>
+        <p>High score: <span id="highScore">N/A</span></p>
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="myModal">
@@ -36,17 +36,14 @@
     <script>
         // This function embedded in HTML because it receives JSON data from the web server (simplest way to handle the data)
         // This function is called from inside the js file.
+        // We don't use fetch (like when we get the high score) because we only need to do this once
         function getWordList() {
             // Get the list of strings from the python web server encoded in JSON format
             let words = JSON.parse('{{ myWords | safe }}')    // Do not use " --- MUST use ' !!!!!
             return words
         }
 
-        function getHighScore(){
-            console.log({{ highScore }})
-            let high = {{ highScore }}
-            return high
-        }
+
     </script>
 
     {# This is the main game script #}

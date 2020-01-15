@@ -30,6 +30,7 @@ function chooseWord() {
 function gameOver() {
     clearInterval(myTimer)  // Stops setCountdownTimer
     sendGameResult()    // Send the results to the server
+    updateHighScore()
 
     $("#word-input").prop("disabled", true);    // Disable keyboard input
     $("#word-input").val("")
@@ -48,6 +49,20 @@ function setCountdownTimer() {
     }
 }
 
+function updateHighScore(){
+        // Send a fetch request
+    fetch('/get_highscore')
+        .then(function (response) {
+            return response.json(); // But parse it as JSON this time
+        })
+        .then(function (json) {
+            //console.log('GET response as JSON:');
+            console.log(json); // Here’s our JSON object
+            console.log("fetched high score " + json['high_score']);
+            $("#highScore").text(json['high_score'])
+        })
+}
+
 function resetGame() {
     gameRunning = false
     timeLimit = maxTime
@@ -60,8 +75,6 @@ function resetGame() {
     $("#wordcnt").text(wordCount)
     $("#word-input").prop("disabled", false);
 
-    highSCore = getHighScore()
-    $("#highScore").text(highSCore)
 }
 
 function GameStart() {
@@ -83,6 +96,7 @@ $(document).ready(function () {
     $("#time").text(timeLimit)
     wordArray = getWordList()
     resetGame()
+    updateHighScore()
 
     // Do not use keydown -- will not read first character!!
     $("#word-input").keyup(function () {

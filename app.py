@@ -61,13 +61,22 @@ def results():
     return render_template('results.html', myResults=myResults)
 
 
+@app.route("/get_highscore", methods=['GET'])
+def get_highscore():
+
+    if request.method == 'GET':
+        # Calculate the high score
+        highScore = findHighestScore()
+        print('High score: %d' % highScore)
+        message = {'high_score': highScore}
+        return jsonify(message)  # serialize and use JSON headers
+    else:
+        print('Invalid request @ /get_highscore')
+
+
 @app.route('/game', methods=['POST', 'GET'])
 def game():
     global myResults, myWords
-
-    # Calculate the high score
-    # highScore = findHighestScore()
-    # print('High score: %d' % highScore)
 
     if request.method == 'POST':
         if request.is_json:
@@ -80,20 +89,11 @@ def game():
             for result in myResults:
                 print('count %d' % result.wordCount)
 
-            # Calculate the high score
-            highScore = findHighestScore()
-            print('High score: %d' % highScore)
-
-            return render_template('game.html', highScore=highScore)
+            return render_template('game.html')
         else:
-            print('Did not receive JSON data_receive')
+            print('Did not receive JSON')
     else:
-        # Calculate the high score
-        highScore = findHighestScore()
-        print('High score: %d' % highScore)
-
-        # Send the word list to the web page in JSON format
-        return render_template('game.html', myWords=json.dumps(myWords), highScore=highScore)
+        return render_template('game.html', myWords=json.dumps(myWords))
 
 
 if __name__ == '__main__':

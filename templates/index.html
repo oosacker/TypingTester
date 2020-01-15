@@ -5,12 +5,19 @@
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron">
-  <h1 class="display-4">TypingTester</h1>
-  <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem corporis cupiditate eligendi error est expedita facilis magnam minima molestias, numquam officiis possimus praesentium quis ratione saepe, similique velit vero?</p>
-  <hr class="my-4">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi deserunt est et, fugiat nesciunt temporibus. Amet aperiam ex facilis fugiat impedit modi molestias optio, velit. Error ipsa labore minima molestiae?</p>
-  <a class="btn btn-dark btn-lg" href="/game" role="button">Let's play!</a>
-</div>
+    <div class="jumbotron">
+
+{#        <img src="{{ url_for('static', filename='type.jpg') }}" class="img-thumbnail" alt="Let's type!">#}
+{#        <img src="{{ url_for('static', filename='type.jpg') }}" class="img-fluid" alt="Let's type!">#}
+        <h1 class="display-4">TypingTester</h1>
+        <p class="lead">Compete against your friends!</p>
+
+        <hr class="my-4">
+
+        <p>Do your best to type as many words that appear as you can within the time limit!</p>
+        <a class="btn btn-dark btn-lg" href="/game" role="button" id="play_btn">Let's play!</a>
+    </div>
+
+
 
 {% endblock %}

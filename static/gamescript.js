@@ -6,7 +6,9 @@ let gameRunning = false
 let wordCount = 0
 let inputWord = ""
 let myTimer = 0
-let userName = "player"
+let userName = "Player"
+let timeBlinking = 0
+let msgBlinking = 0
 
 function sendGameResult() {
     // Send game result to web server with XMLHttpRequest
@@ -18,6 +20,7 @@ function sendGameResult() {
     xhr.send(data);
 }
 
+// Choose a random word from the word array (sent from the web server)
 function chooseWord() {
     let random = Math.floor(Math.random() * wordArray.length)
     console.log(random)
@@ -25,38 +28,64 @@ function chooseWord() {
     $("#word-output").text(currentWord)
 }
 
+// Ends the current game
 function gameOver() {
+    gameRunning = false
+
+    $("#game_end").modal();  // Display the overlay dialogue
+
     clearInterval(myTimer)  // Stops setCountdownTimer
+    clearInterval(timeBlinking) // Stops the blinking effect on the timer
+
     sendGameResult()    // Send the results to the server
-    updateHighScore()
+    updateHighScore()   // Update the high score
 
     $("#word-input").prop("disabled", true);    // Disable keyboard input
-    $("#word-input").val("")
-    $("#game_end").modal();  // Display the overlay dialogue
-    gameRunning = false
-    $("#message").css("color", "grey"); // Change the colour so it is obvious
+    $("#word-input").val("")    // Reset the input area
+
+    $("#message").css("color", "dimgray"); // Change the colour so it is obvious
+    msgBlinking = setInterval(blinkMsg, 1000)
+
     $("#message").text("Click me to play again")    // Set the game will reset if you click the message box
 }
 
 function setCountdownTimer() {
+
     if (timeLimit === 0) {
         gameOver()
+    }
+
+    // Special case for time = 5 to start the blinking effect. Cannot set call setInterval more than once or cannot stop!!!!
+    else if (timeLimit === 5) {
+        timeBlinking = setInterval(blinkTime, 200);
+        timeLimit -= 1
+        $("#time").text(timeLimit)
     } else {
         timeLimit -= 1
         $("#time").text(timeLimit)
     }
 }
 
+// Requires non-lite version of jQuery to work!!! (Animations are not included in lite version)
+function blinkTime() {
+    $('#time').fadeOut(100);
+    $('#time').fadeIn(100);
+}
+
+function blinkMsg() {
+    $('#message').fadeOut(500);
+    $('#message').fadeIn(500);
+}
+
 function updateHighScore() {
     // Send a fetch request
     fetch('/get_highscore')
         .then(function (response) {
-            return response.json(); // But parse it as JSON this time
+            return response.json();
         })
         .then(function (json) {
-            //console.log('GET response as JSON:');
-            console.log(json); // Here’s our JSON object
-            console.log("fetched high score " + json['high_score']);
+            console.log(json);
+            console.log("Fetched high score: " + json['high_score']);
             $("#highScore").text(json['high_score'])
         })
 }
@@ -65,14 +94,16 @@ function resetGame() {
     gameRunning = false
     timeLimit = maxTime
     wordCount = 0
+
     chooseWord()
+    clearInterval(msgBlinking)
+    $("#message").css("color", "black"); // Change the colour back
 
     $("#message").text("Start typing to play")
     $("#time").text(timeLimit)
     $("#word-input").val("")
     $("#wordcnt").text(wordCount)
     $("#word-input").prop("disabled", false);
-
 }
 
 function GameStart() {
@@ -84,7 +115,6 @@ function GameStart() {
 $("#message").click(function () {
     if (!gameRunning) {
         resetGame()
-        $("#message").css("color", "black"); // Change the colour back
     }
 });
 
@@ -97,6 +127,8 @@ $("#name_save_btn").click(function () {
     maxTime = parseInt($("#time_input").val())
     timeLimit = maxTime
     $("#time").text(timeLimit)
+
+
     $("#name_entry_box").modal('hide')  // Hide the dialogue
 });
 

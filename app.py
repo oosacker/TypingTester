@@ -14,19 +14,33 @@ class gameResult:
         self.maxTime = maxTime
 
 
+def findHighestScore():
+    # If result list is empty...
+    if not myResults:
+        return -1
+
+    else:
+        currentMax = 0
+        for result in myResults:
+            if currentMax < result.wordCount:
+                currentMax = result.wordCount
+                print(currentMax)
+                print(result.wordCount)
+        return currentMax
+
+
 def loadCSV():
     global myWords
     try:
         myFile = open("random_words.csv")
         reader = csv.reader(myFile)
-        myWords = list(reader)
-        return myWords
+        myWords = list(reader)[0]  # The reader returns a 2d list so need [0]
 
     except FileNotFoundError:
         print("File not found\n")
 
     finally:
-        print('Number of words loaded from CSV: %d' % (myWords[0].__len__()))
+        print('Number of words loaded from CSV: %d' % (myWords.__len__()))
 
 
 loadCSV()
@@ -35,11 +49,6 @@ loadCSV()
 @app.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
-
-
-@app.route("/getwords")
-def getwords():
-    return json.dumps('12345')
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -56,6 +65,10 @@ def results():
 def game():
     global myResults, myWords
 
+    # Calculate the high score
+    # highScore = findHighestScore()
+    # print('High score: %d' % highScore)
+
     if request.method == 'POST':
         if request.is_json:
             data_receive = json.loads(request.get_data())
@@ -64,14 +77,23 @@ def game():
 
             myResult = gameResult(data_receive['userName'], data_receive['wordCount'], data_receive['maxTime'])
             myResults.append(myResult)
+            for result in myResults:
+                print('count %d' % result.wordCount)
 
-            print(myResults)
-            return render_template('game.html')
+            # Calculate the high score
+            highScore = findHighestScore()
+            print('High score: %d' % highScore)
+
+            return render_template('game.html', highScore=highScore)
         else:
             print('Did not receive JSON data_receive')
     else:
+        # Calculate the high score
+        highScore = findHighestScore()
+        print('High score: %d' % highScore)
+
         # Send the word list to the web page in JSON format
-        return render_template('game.html', myWords=json.dumps(myWords))
+        return render_template('game.html', myWords=json.dumps(myWords), highScore=highScore)
 
 
 if __name__ == '__main__':

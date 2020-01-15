@@ -1,7 +1,7 @@
 {% extends 'template.html' %}
 
 {% block head %}
-    <title>Game on!!</title>
+    <title>Play the Game</title>
 {% endblock %}
 
 {% block body %}
@@ -13,8 +13,8 @@
         <h5 id="message"><strong>message</strong></h5>
         <hr>
         <p>Time left (s): <span id="time">time</span></p>
-        <p>Words typed: <span id="wordcnt">words</span></p>
-        <p>Best record: <span id="record">12345</span></p>
+        <p>Current score: <span id="wordcnt">words</span></p>
+        <p>High score: <span id="highScore">0</span></p>
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="myModal">
@@ -34,13 +34,18 @@
     </div>
 
     <script>
-        // This function is inside the HTML because it receives JSON data from the web server (simplest way to handle the data)
+        // This function embedded in HTML because it receives JSON data from the web server (simplest way to handle the data)
+        // This function is called from inside the js file.
         function getWordList() {
             // Get the list of strings from the python web server encoded in JSON format
-            InputArray = JSON.parse('{{ myWords | safe }}');    // Do not use " --- MUST use ' !!!!!
-            // Because InputArray is 2d (normally JSON has a key-value pair; if you don't define the key it's 0)
-            wordArray = InputArray[0]
-            return wordArray
+            let words = JSON.parse('{{ myWords | safe }}')    // Do not use " --- MUST use ' !!!!!
+            return words
+        }
+
+        function getHighScore(){
+            console.log({{ highScore }})
+            let high = {{ highScore }}
+            return high
         }
     </script>
 

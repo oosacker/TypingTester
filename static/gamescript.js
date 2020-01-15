@@ -1,46 +1,24 @@
 let InputArray = []
 let wordArray = []
 let currentWord = ""
-const maxTime = 20
+const maxTime = 5
 let timeLimit = maxTime
 let gameRunning = false
 let wordCount = 0
 let inputWord = ""
 let myTimer = 0
 let userName = "player"
-
-// function getWordList() {
-//     // Get the list of strings from the python web server encoded in JSON format
-//     InputArray = JSON.parse('{{ myWords | safe }}');    // Do not use " --- MUST use ' !!!!!
-//
-//     // Because InputArray is 2d (normally JSON has a key-value pair; if you don't define the key it's 0)
-//     wordArray = InputArray[0]
-// }
+let highSCore = 0
 
 function sendGameResult() {
-    // Creating a XHR object
+    // Send game result to web server with XMLHttpRequest
     let xhr = new XMLHttpRequest();
     let url = "/game";
-
-    // open a connection
     xhr.open("POST", url, true);
-
-    // Set the request header i.e. which type of content you are sending
     xhr.setRequestHeader("Content-Type", "application/json");
-
-    // Converting JSON data to string
     let data = JSON.stringify({"userName": userName, "wordCount": wordCount, "maxTime": maxTime});
-
-    // Sending data with the request
     xhr.send(data);
 }
-
-$("#message").click(function () {
-    if (!gameRunning) {
-        resetGame()
-        $("#message").css("color", "black"); // Change the colour back
-    }
-});
 
 function chooseWord() {
     let random = Math.floor(Math.random() * wordArray.length)
@@ -50,7 +28,7 @@ function chooseWord() {
 }
 
 function gameOver() {
-    clearInterval(myTimer)
+    clearInterval(myTimer)  // Stops setCountdownTimer
     sendGameResult()    // Send the results to the server
 
     $("#word-input").prop("disabled", true);    // Disable keyboard input
@@ -76,11 +54,14 @@ function resetGame() {
     wordCount = 0
     chooseWord()
 
-    $("#message").text("Game set")
+    $("#message").text("Start typing to play")
     $("#time").text(timeLimit)
     $("#word-input").val("")
     $("#wordcnt").text(wordCount)
     $("#word-input").prop("disabled", false);
+
+    highSCore = getHighScore()
+    $("#highScore").text(highSCore)
 }
 
 function GameStart() {
@@ -88,6 +69,15 @@ function GameStart() {
     myTimer = setInterval(setCountdownTimer, 1000)
 }
 
+// Event handler for clicking the message area -- does nothing unless game over
+$("#message").click(function () {
+    if (!gameRunning) {
+        resetGame()
+        $("#message").css("color", "black"); // Change the colour back
+    }
+});
+
+// Main game section
 $(document).ready(function () {
 
     $("#time").text(timeLimit)
@@ -97,6 +87,7 @@ $(document).ready(function () {
     // Do not use keydown -- will not read first character!!
     $("#word-input").keyup(function () {
 
+        $("#message").text("Playing")
         inputWord = $("#word-input").val()
 
         console.log(inputWord)

@@ -1,6 +1,7 @@
 from flask import *
 import json
 import csv
+import os
 
 app = Flask(__name__)
 myWords = []
@@ -51,7 +52,7 @@ def saveAllResults():
         myFile = open("results.csv", 'w', newline='')
         writer = csv.writer(myFile)
         for res in myResults:
-            count+=1
+            count += 1
             writer.writerow([res.userName, res.wordCount, res.maxTime])
 
     except FileNotFoundError:
@@ -64,7 +65,11 @@ def saveAllResults():
 # Save a single results to CSV, note the use of 'a' which means 'append' (only add a single row)
 def saveResult(result):
     try:
-        myFile = open("results.csv", 'a', newline='')
+        if isFileEmpty("results.csv"):
+            myFile = open("results.csv", 'w')
+        else:
+            myFile = open("results.csv", 'a', newline='')
+
         writer = csv.writer(myFile)
         writer.writerow([result.userName, result.wordCount, result.maxTime])
 
@@ -75,27 +80,41 @@ def saveResult(result):
         print('Result saved to CSV')
 
 
+def isFileEmpty(file):
+    if os.stat(file).st_size <= 0:
+        print('File is empty: %s' % file)
+        return True
+    else:
+        print('File is not empty: %s' % file)
+        return False
+
+
 def loadResults():
     global myResults
     myResults.clear()
+    count = 0
+
     try:
+        if isFileEmpty("results.csv"):
+            return
+
         myFile = open("results.csv")
         reader = csv.reader(myFile)
-        for res in reader:
-            userName = res[0]
-            wordCount = int(res[1])
-            maxTime = int(res[2])
+
+        for row in reader:
+            print(row)
+            userName = row[0]
+            wordCount = int(row[1])
+            maxTime = int(row[2])
             loaded_res = gameResult(userName, wordCount, maxTime)
             myResults.append(loaded_res)
+            count += 1
 
     except FileNotFoundError:
-        print("File not found\n")
-
-    except IndexError:
-        print("File is empty\n")
+        print("File not found: results.csv\n")
 
     finally:
-        print('Previous results loaded from CSV')
+        print('Number of previous results loaded from CSV: %d' % count)
 
 
 loadWords()
@@ -120,7 +139,6 @@ def results():
 # This is for the javascript app to fetch the high score.
 @app.route("/get_highscore", methods=['GET'])
 def get_highscore():
-
     if request.method == 'GET':
         # Calculate the high score
         highScore = findHighestScore()

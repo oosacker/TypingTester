@@ -1,7 +1,7 @@
 let wordArray = []
 let currentWord = ""
-const maxTime = 30
-let timeLimit = maxTime
+let maxTime = 30    // Game time defined by the player
+let timeLimit = 0;  // Displayed countdown time
 let gameRunning = false
 let wordCount = 0
 let inputWord = ""
@@ -47,8 +47,8 @@ function setCountdownTimer() {
     }
 }
 
-function updateHighScore(){
-        // Send a fetch request
+function updateHighScore() {
+    // Send a fetch request
     fetch('/get_highscore')
         .then(function (response) {
             return response.json(); // But parse it as JSON this time
@@ -90,9 +90,13 @@ $("#message").click(function () {
 
 // Event handler for the name entry dialogue, but DO NOT change if the input box was empty (leaves as default 'player')
 $("#name_save_btn").click(function () {
-    userName_temp = $("#name_input").val()
-    if (userName_temp != '')
+    let userName_temp = $("#name_input").val()
+    if (userName_temp !== '')
         userName = userName_temp
+
+    maxTime = parseInt($("#time_input").val())
+    timeLimit = maxTime
+    $("#time").text(timeLimit)
     $("#name_entry_box").modal('hide')  // Hide the dialogue
 });
 
@@ -101,8 +105,6 @@ $(document).ready(function () {
 
     $("#name_entry_box").modal()  // Display the overlay dialogue
 
-
-    $("#time").text(timeLimit)
     wordArray = getWordList()
     resetGame()
     updateHighScore()

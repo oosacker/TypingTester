@@ -65,10 +65,10 @@ def saveAllResults():
 # Save a single results to CSV, note the use of 'a' which means 'append' (only add a single row)
 def saveResult(result):
     try:
-        if isFileEmpty("results.csv"):
-            myFile = open("results.csv", 'w')
-        else:
-            myFile = open("results.csv", 'a', newline='')
+        # if isFileEmpty("results.csv"):
+        #     myFile = open("results.csv", 'a', newline='')
+        # else:
+        myFile = open("results.csv", 'a', newline='')
 
         writer = csv.writer(myFile)
         writer.writerow([result.userName, result.wordCount, result.maxTime])

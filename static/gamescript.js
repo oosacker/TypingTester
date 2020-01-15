@@ -90,10 +90,17 @@ $("#message").click(function () {
     }
 });
 
+// Event handler for the name entry dialogue
+$("#name_save_btn").click(function () {
+    userName = $("#name_input").val()
+    $("#name_entry_box").modal('hide')  // Hide the dialogue
+});
+
 // Main game section
 $(document).ready(function () {
 
-    $("#name_entry").modal();  // Display the overlay dialogue
+    $("#name_entry_box").modal()  // Display the overlay dialogue
+
 
     $("#time").text(timeLimit)
     wordArray = getWordList()

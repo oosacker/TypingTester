@@ -1,14 +1,12 @@
-let InputArray = []
 let wordArray = []
 let currentWord = ""
-const maxTime = 5
+const maxTime = 30
 let timeLimit = maxTime
 let gameRunning = false
 let wordCount = 0
 let inputWord = ""
 let myTimer = 0
 let userName = "player"
-let highSCore = 0
 
 function sendGameResult() {
     // Send game result to web server with XMLHttpRequest
@@ -110,14 +108,15 @@ $(document).ready(function () {
     // Do not use keydown -- will not read first character!!
     $("#word-input").keyup(function () {
 
-        $("#message").text("Playing")
+        $("#message").text("Playing...")
         inputWord = $("#word-input").val()
 
         console.log(inputWord)
         console.log(currentWord)
 
         if (gameRunning) {
-            if (inputWord === currentWord) {
+            // Convert the strings to ignore case
+            if (inputWord.toUpperCase() === currentWord.toUpperCase()) {
                 $("#word-input").val("")    // Clear the input field
                 chooseWord()
                 wordCount++

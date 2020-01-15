@@ -9,6 +9,7 @@ let myTimer = 0
 let userName = "Player"
 let timeBlinking = 0
 let msgBlinking = 0
+let languageMode = "en"
 
 function sendGameResult() {
     // Send game result to web server with XMLHttpRequest
@@ -78,14 +79,15 @@ function blinkMsg() {
 }
 
 function updateHighScore() {
-    // Send a fetch request
+    // Send a fetch request via GET
     fetch('/get_highscore')
         .then(function (response) {
+            // Parse response as JSON
             return response.json();
         })
         .then(function (json) {
-            console.log(json);
-            console.log("Fetched high score: " + json['high_score']);
+            // console.log(json);
+            // console.log("Fetched high score: " + json['high_score']);
             $("#highScore").text(json['high_score'])
         })
 }
@@ -138,6 +140,8 @@ $(document).ready(function () {
     $("#name_entry_box").modal()  // Display the overlay dialogue
 
     wordArray = getWordList()
+    // wordArray = getWordListX(languageMode)
+
     resetGame()
     updateHighScore()
 

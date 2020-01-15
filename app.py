@@ -33,7 +33,8 @@ def findHighestScore():
 def loadWords():
     global myWords
     try:
-        myFile = open("random_words.csv")
+        myFile = open("random_words.csv", "r", encoding="utf-8")
+        # myFile = open("random_words_jp.csv", "r", encoding="utf-8")
         reader = csv.reader(myFile)
         myWords = list(reader)[0]  # The reader returns a 2d list so need [0]
 
@@ -147,6 +148,16 @@ def get_highscore():
         return jsonify(message)  # serialize and use JSON headers
     else:
         print('Invalid request @ /get_highscore')
+
+
+# This is for the javascript app to fetch the high score.
+# @app.route("/get_words", methods=['GET'])
+# def get_words():
+#     if request.method == 'GET':
+#         print('get words')
+#         return json.dumps(myWords)  # serialize and use JSON headers
+#     else:
+#         print('Invalid request @ /get_highscore')
 
 
 @app.route('/game', methods=['POST', 'GET'])

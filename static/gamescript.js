@@ -34,7 +34,7 @@ function gameOver() {
 
     $("#word-input").prop("disabled", true);    // Disable keyboard input
     $("#word-input").val("")
-    $("#myModal").modal();  // Display the overlay dialogue
+    $("#game_end").modal();  // Display the overlay dialogue
     gameRunning = false
     $("#message").css("color", "grey"); // Change the colour so it is obvious
     $("#message").text("Click me to play again")    // Set the game will reset if you click the message box
@@ -92,6 +92,8 @@ $("#message").click(function () {
 
 // Main game section
 $(document).ready(function () {
+
+    $("#name_entry").modal();  // Display the overlay dialogue
 
     $("#time").text(timeLimit)
     wordArray = getWordList()

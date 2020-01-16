@@ -155,8 +155,8 @@ $(document).ready(function () {
         console.log(currentWord)
 
         if (gameRunning) {
-            // Convert the strings to ignore case
-            if (inputWord.toUpperCase() === currentWord.toUpperCase()) {
+            // Convert the strings to ignore case; use trim() to remove spaces before and after input
+            if (inputWord.trim().toUpperCase() === currentWord.toUpperCase()) {
                 $("#word-input").val("")    // Clear the input field
                 chooseWord()
                 wordCount++

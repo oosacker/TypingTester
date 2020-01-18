@@ -34,7 +34,7 @@ def loadWords():
     global myWords
     try:
         myFile = open("random_words.csv", "r", encoding="utf-8")
-        # myFile = open("random_words_jp.csv", "r", encoding="utf-8")
+        # myFile = open("random_words_jp.csv", "r", encoding="utf-8") # Japanese word list for testing
         reader = csv.reader(myFile)
         myWords = list(reader)[0]  # The reader returns a 2d list so need [0]
 

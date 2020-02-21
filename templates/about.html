@@ -1,0 +1,30 @@
+{% extends 'template.html' %}
+{% block head %}
+
+    <title>About</title>
+
+{% endblock %}
+
+
+{% block body %}
+    <div class="col-lg-auto">
+        <p class="lead">About this project</p>
+        <ul>
+            <li>This web app was written by <a href="https://www.linkedin.com/in/haseganats/">Natsuki Hasegawa</a> in
+                January 2020, for the course <a href="https://www.wgtn.ac.nz/courses/swen/503/2019/offering?crn=28342">SWEN503</a>
+                during the <a
+                        href="https://www.wgtn.ac.nz/ecs/study/postgraduate-study/software-development">Master of
+                    Software
+                    Development</a> degree, <a href="https://www.wgtn.ac.nz/">Victoria University of Wellington</a>.
+            </li>
+            <li>The backend web server is written in <a href="https://www.python.org/">Python</a> using the <a href="https://palletsprojects.com/p/flask/">Flask web framework</a>.</li>
+            <li>The random words are read from a CSV file with 3902 items. This file is stored on the web server. The word list is sent to the JavaScript code in JSON format.</li>
+            <li>The game results are saved into a CSV file on the web server. Because of this, on some web servers (such as Heroku), the file might not be
+                updated and not display the new results.
+            </li>
+            <li>The frontend is written with <a href="https://getbootstrap.com/">Bootstrap 4</a> and <a href="https://jquery.com/">jQuery</a>.</li>
+            <li>The fetch API is used to update the high scores.</li>
+            <li>AJAX is used to send the high scores from the JavaScript code to the Flask web server.</li>
+        </ul>
+    </div>
+{% endblock %}

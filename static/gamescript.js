@@ -9,7 +9,7 @@ let myTimer = 0
 let userName = "Player"
 let timeBlinking = 0
 let msgBlinking = 0
-let languageMode = "en"
+
 
 function sendGameResult() {
     // Send game result to web server with XMLHttpRequest
@@ -139,37 +139,34 @@ $("#name_save_btn").click(function () {
     $("#name_entry_box").modal('hide')  // Hide the dialogue
 });
 
+
+// Do not use keydown -- will not read first character!!
+$("#word-input").keyup(function () {
+
+    $("#message").text("Playing...")
+    inputWord = $("#word-input").val()
+
+    console.log(inputWord)
+    console.log(currentWord)
+
+    if (gameRunning) {
+        // Convert the strings to ignore case; use trim() to remove spaces before and after input
+        if (inputWord.trim().toUpperCase() === currentWord.toUpperCase()) {
+            $("#word-input").val("")    // Clear the input field
+            chooseWord()
+            wordCount++
+            $("#wordcnt").text(wordCount)
+        }
+    } else {
+        GameStart()
+        $("#message").text("Playing...")
+    }
+})
+
 // Main game section
 $(document).ready(function () {
-
     $("#name_entry_box").modal()  // Display the overlay dialogue
-
     wordArray = getWordList()
-    // wordArray = getWordListX(languageMode)
-
     resetGame()
     updateHighScore()
-
-    // Do not use keydown -- will not read first character!!
-    $("#word-input").keyup(function () {
-
-        $("#message").text("Playing...")
-        inputWord = $("#word-input").val()
-
-        console.log(inputWord)
-        console.log(currentWord)
-
-        if (gameRunning) {
-            // Convert the strings to ignore case; use trim() to remove spaces before and after input
-            if (inputWord.trim().toUpperCase() === currentWord.toUpperCase()) {
-                $("#word-input").val("")    // Clear the input field
-                chooseWord()
-                wordCount++
-                $("#wordcnt").text(wordCount)
-            }
-        } else {
-            GameStart()
-            $("#message").text("Playing...")
-        }
-    })
 })

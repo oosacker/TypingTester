@@ -18,7 +18,7 @@ class gameResult:
 def findHighestScore():
     # If result list is empty...
     if not myResults:
-        return -1
+        return -1  # return -1 if no results found -- defaults to N/A in the HTML
 
     else:
         currentMax = 0

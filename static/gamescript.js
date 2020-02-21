@@ -88,7 +88,12 @@ function updateHighScore() {
         .then(function (json) {
             // console.log(json);
             // console.log("Fetched high score: " + json['high_score']);
-            $("#highScore").text(json['high_score'])
+
+            // don't display the high score if none are found
+            let my_highscore = json['high_score'];
+            if(my_highscore !== -1){
+                $("#highScore").text(my_highscore);
+            }
         })
 }
 
